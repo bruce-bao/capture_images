@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Scan your Website</title>
+    <link rel="stylesheet" href="css/style.css" media="screen" type="text/css"/>
+    <script src="./js/jquery.js"></script>
+    <script src="./js/capture_images.js"></script>
+</head>
+<body>
+<div class="container">
+    <form id="form">
+        <h3>Scan your Website</h3>
+        <fieldset>
+            <p><b>Please enter your website</b></p>
+            <input name="web_url" placeholder="Please enter your web address" type="text" tabindex="1">
+        </fieldset>
+        <fieldset>
+            <p><b>Please select the type of image you want to capture</b></p>
+            jpg <input class="image_type" id="jpg" name="image_type[]" type="checkbox" value="jpg" checked><label
+                for="jpg"></label>
+            jpeg <input class="image_type" id="jpeg" name="image_type[]" type="checkbox" value="jpeg" checked><label
+                for="jpeg"></label>
+            png <input class="image_type" id="png" name="image_type[]" type="checkbox" value="png" checked><label
+                for="png"></label>
+            svg <input class="image_type" id="svg" name="image_type[]" type="checkbox" value="svg" checked><label
+                for="svg"></label>
+        </fieldset>
+        <fieldset>
+            <p><b>Please enter picture size (minimum and maximum)</b></p>
+            <input name="min_image_size" placeholder="Minimum picture size" type="text"
+                   onkeyup="value=value.replace(/[^\d]/g,'')">&nbsp;kb
+            <span>-</span>
+            <input name="max_image_size" placeholder="Maximum picture size" type="text"
+                   onkeyup="value=value.replace(/[^\d]/g,'')">&nbsp;kb
+        </fieldset>
+        <fieldset>
+            <div id="form-submit" data-submit="...Grasping">Scan</div>
+        </fieldset>
+    </form>
+    <div id="background" class="background" style="display: none; "></div>
+    <div id="progressBar" class="progressBar" style="display: none; ">Pictures are being captured, please wait...</div>
+</div>
+<div id="img" style="text-align:center;clear:both">
+
+</div>
+</body>
+
+</html>
