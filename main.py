@@ -10,7 +10,6 @@ from io import StringIO
 from urllib.parse import urlparse
 
 import requests
-from PIL import Image
 from bs4 import BeautifulSoup
 
 
@@ -52,11 +51,11 @@ def captureImage(webUrl, minImageSize, maxImageSize, imageType):
     urlHead = urlInfo.scheme + '://' + urlInfo.netloc + '/'
 
     # 图片本地保存路径
-    path = './Downloads/' + urlInfo.netloc + urlInfo.path.split('.')[0]
+    path = '/www/wwwroot/capture_images/Downloads/' + urlInfo.netloc + urlInfo.path.split('.')[0]
     path = path.rstrip('/') + '/'
 
     # 图片访问路径
-    url_path = 'http://www.captureimages.com' + path
+    url_path = 'http://www.ymlwww.work' + path
     # 创建下载目录
     mkdir(path)
 

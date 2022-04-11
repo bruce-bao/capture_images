@@ -4,22 +4,21 @@ $imageType = $_POST['image_type'];
 $minImageSize = $_POST['min_image_size'];
 $maxImageSize = $_POST['max_image_size'];
 $imageType = addslashes(json_encode($imageType));
-
 // 校验参数是否合法
-$path = "python main.py "; //需要注意的是：末尾要加一个空格
+$path = "python3 main.py "; //需要注意的是：末尾要加一个空格
 
+//passthru($path . $webUrl . ' ' . $minImageSize . ' ' . $maxImageSize . ' ' . $imageType);//等同于命令`python python.py 参数`，并接收打印出来的信息
 exec($path . $webUrl . ' ' . $minImageSize . ' ' . $maxImageSize . ' ' . $imageType, $output,
     $res);//等同于命令`python python.py 参数`，并接收打印出来的信息
-
 if ($res === 0) {
     $url = parse_url($webUrl);
     $path = $url['host'] . explode('.', $url['path'])[0];
-    $webUrl = 'http://www.captureimages.com';
+    $webUrl = 'http://www.ymlwww.work';
     $path = './Downloads/' . $path;
-
     $res = getDir($webUrl, $path);
     apiSuccess($res);
-
+} else {
+    apiSuccess([]);
 }
 
 function apiSuccess($data = [], $message = 'success！', $code = '200')

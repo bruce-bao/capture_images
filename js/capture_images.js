@@ -22,8 +22,6 @@ $(function () {
 
         var min_image_size = $('input[name="min_image_size"]').val();
         var max_image_size = $('input[name="max_image_size"]').val();
-        alert(min_image_size)
-        alert(max_image_size)
         if (parseInt(max_image_size) < parseInt(min_image_size)) {
             alert('Please enter the correct picture size')
             return false
@@ -37,7 +35,7 @@ $(function () {
                 min_image_size: min_image_size,
                 max_image_size: max_image_size,
             },
-            // contentType: "application/json",
+            dataType: "json",
             url: "../index.php",
             beforeSend: function () {
                 ajaxbg.show();
