@@ -15,7 +15,7 @@ $(function () {
         $(".image_type:checked").each(function () {
             image_type.push($(this).val());
         })
-        if (image_type.length == 0) {
+        if (image_type.length === 0) {
             alert('Please select a picture type')
             return false
         }
@@ -45,13 +45,15 @@ $(function () {
                     var $currentElTop = $("#img").offset().top;
                     $(document).scrollTop($currentElTop);
                     $('#img').empty();
+                    var html = '';
                     $.each(result['data'], function (index, value) {
-                        console.log(value)
-                        $('#img').append('<div class="layer-image" style="width:200px;height:250px; margin:0 10px 10px 0;border: 1px solid #ddd; border-radius: 3px;">' +
+                        // console.log(value)
+                        html += '<div class="layer-image" style="width:200px;height:250px; margin:0 10px 10px 0;border: 1px solid #ddd; border-radius: 3px;">' +
                             '<div class="image"><img onclick="largeImg(this)" style="width: 200px;height: 200px; object-fit: contain; cursor:pointer;"  src="' + value['url'] + '" alt=""></div>' +
                             '<div class="detail" style="margin-left: 10px;font-size: 14px;">' + value['detail'] + '</div>' +
-                            '</div>')
+                            '</div>';
                     });
+                    $('#img').append(html);
                 } else {
                     alert('error')
                 }

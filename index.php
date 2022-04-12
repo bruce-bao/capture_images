@@ -21,7 +21,7 @@ if ($res === 0) {
         $info = getimagesize($webUrl . $path . '/' . $image);
         $size = filesize($path . '/' . $image);
         $imageRes[] = [
-            'url'    => $webUrl . $path . '/' . $image,
+            'url'    => $path . '/' . $image,
             'detail' => explode('.', $image)[1] . ' ' . round($size / 1024, 1) . 'kb' . ' ' . $info[0] . 'x' . $info[1]
         ];
     }
