@@ -15,8 +15,17 @@ if ($res === 0) {
     $path = $url['host'] . explode('.', $url['path'])[0];
     $webUrl = 'http://www.ymlwww.work';
     $path = './Downloads/' . $path;
-    $res = getDir($webUrl, $path);
-    apiSuccess($res);
+    $imageList = getDir($webUrl, $path);
+    $imageRes = [];
+    foreach ($imageList as $image) {
+        $info = getimagesize($webUrl . $path . '/' . $image);
+        $size = filesize($path . '/' . $image);
+        $imageRes[] = [
+            'url'    => $webUrl . $path . '/' . $image,
+            'detail' => explode('.', $image)[1] . ' ' . round($size / 1024, 1) . 'kb' . ' ' . $info[0] . 'x' . $info[1]
+        ];
+    }
+    apiSuccess($imageRes);
 } else {
     apiSuccess([]);
 }
@@ -47,7 +56,7 @@ function getDir($webUrl, $path)
                 if (is_dir($sub_path)) {
                     getDir($webUrl, $sub_path);
                 } else {
-                    $imageList[] = $webUrl . $path . '/' . $value;
+                    $imageList[] = $value;
                 }
             }
         }

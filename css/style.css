@@ -17,7 +17,7 @@ body {
     font-size: 12px;
     line-height: 30px;
     color: #777;
-    background: #0CF;
+    background: #f0f0f0;
 }
 
 .container {
@@ -165,7 +165,7 @@ fieldset {
     height: 100%;
     opacity: 0.4;
     filter: alpha(opacity=40);
-    background:white;
+    background: white;
     position: absolute;
     top: 0;
     left: 0;
@@ -174,8 +174,9 @@ fieldset {
 
 .progressBar {
     border: solid 2px #86A5AD;
-    background: white url('../images/loading.png') no-repeat 10px 10px;
+    background: white url('../images/loading.gif') no-repeat 10px 10px;
 }
+
 .progressBar {
     display: block;
     width: 350px;
