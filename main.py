@@ -13,15 +13,6 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def is_json(myjson):
-    try:
-        json_object = json.loads(myjson)
-    except ValueError as e:
-        print(e)
-        return False
-    return True
-
-
 def mkdir(path):
     folder = os.path.exists(path)
     if not folder:
@@ -44,9 +35,10 @@ def captureImage(webUrl, minImageSize, maxImageSize, imageType):
     header = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36"
     }
-    resp = requests.get(webUrl, header)
-    src = resp.text
-
+    resp = requests.get(webUrl, headers=header)
+    html = resp.text
+    # print(src)
+    # exit()
     urlInfo = urlparse(webUrl)
     urlHead = urlInfo.scheme + '://' + urlInfo.netloc + '/'
 
@@ -62,10 +54,12 @@ def captureImage(webUrl, minImageSize, maxImageSize, imageType):
     totalImageFiles = os.listdir(path)  # 得到文件夹下的所有文件名称
 
     # 获取img标签
-    soup = BeautifulSoup(src, features='html.parser')
+    soup = BeautifulSoup(html, features='html.parser')
     imgs = soup.select('img')
+    # print(imgs)
     # 下载成功的图片
     success_data = []
+    i = 0
     for img in imgs:
         # log_msg(str(img))
         img = img['src']
@@ -104,16 +98,31 @@ def captureImage(webUrl, minImageSize, maxImageSize, imageType):
                             img2 = urlHead + "/" + img
 
                 # 判断文件大小
-                image = requests.get(img2).content
+                image = requests.get(img2, headers=header).content
                 image_b = io.BytesIO(image).read()
                 size = len(image_b) / 1e3  # kb
 
-                if (math.ceil(size) > int(maxImageSize)) or (math.ceil(size) < int(minImageSize)):
+                if (round(size, 2) > int(maxImageSize)) or (round(size, 2) < int(minImageSize)):
                     log_msg(u'原始图片大小：' + str(size))
                     continue
 
-                urllib.request.urlretrieve(img2, filename=filename)
+                # urllib.request.urlretrieve(img2, filename=filename)
+                # continue
+                try:
+                    pic = requests.get(img2, headers=header)
+                    i = i + 1
+                    with open(filename, "wb") as f:
+                        log_msg(u"正在下载第{0}张照片：".format(str(i)))
+
+                        f.write(pic.content)
+                        f.close()
+
+                except requests.exceptions.ConnectionError:
+                    log_msg(u"当前图片无法下载： " + str(img2))
+                    continue
+
                 success_data.append(filename2)
+
             except Exception as e:
                 log_msg(u"图片下载失败，原因： " + str(e))
                 log_msg(img)

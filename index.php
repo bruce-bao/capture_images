@@ -1,9 +1,9 @@
 <?php
 $webUrl = $_POST['web_url'];
-$imageType = $_POST['image_type'];
+$imageTypeArr = $_POST['image_type'];
 $minImageSize = $_POST['min_image_size'];
 $maxImageSize = $_POST['max_image_size'];
-$imageType = addslashes(json_encode($imageType));
+$imageType = addslashes(json_encode($imageTypeArr));
 // 校验参数是否合法
 $path = "python3 main.py "; //需要注意的是：末尾要加一个空格
 
@@ -18,6 +18,18 @@ if ($res === 0) {
     $imageList = getDir($webUrl, $path);
     $imageRes = [];
     foreach ($imageList as $image) {
+        // 过滤类型
+        $checkImageTypeRes = checkImageType($imageTypeArr, $image);
+        if (!$checkImageTypeRes) {
+            continue;
+        }
+
+        // 过滤大小
+        $checkImageSizeRes = checkImageSize($path . '/' . $image, $minImageSize, $maxImageSize);
+        if (!$checkImageSizeRes) {
+            continue;
+        }
+
         $info = getimagesize($webUrl . $path . '/' . $image);
         $size = filesize($path . '/' . $image);
         $imageRes[] = [
@@ -28,6 +40,25 @@ if ($res === 0) {
     apiSuccess($imageRes);
 } else {
     apiSuccess([]);
+}
+
+function checkImageType($imageTypes, $image)
+{
+    if (!in_array(explode('.', $image)[1], $imageTypes)) {
+        return false;
+    }
+
+    return true;
+}
+
+function checkImageSize($image, $minSize, $maxSize)
+{
+    $fileSize = round(filesize($image) / 1024, 2);
+    if ($fileSize > $maxSize || $fileSize < $minSize) {
+        return false;
+    }
+
+    return true;
 }
 
 function apiSuccess($data = [], $message = 'success！', $code = '200')
